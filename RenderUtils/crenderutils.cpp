@@ -1,6 +1,5 @@
-#define GLEW_STATIC
+#include "gldecs.h"
 
-#include "GLEW\GL\glew.h"
 #include "crenderutils.h"
 #include "Vertex.h"
 

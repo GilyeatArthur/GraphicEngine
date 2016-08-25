@@ -10,9 +10,9 @@ Geometry makeGeometry(const struct Vertex *verts, size_t vsize, const unsigned i
 {
 	Geometry retval;
 	//Define the Variables
-	glCreateBuffers(1, &retval.vbo); //Store my vertices
-	glCreateBuffers(1, &retval.ibo); // store indices
-	glCreateVertexArrays(1, &retval.vao); // Store attribute information
+	glGenBuffers(1, &retval.vbo); //Store my vertices
+	glGenBuffers(1, &retval.ibo); // store indices
+	glGenVertexArrays(1, &retval.vao); // Store attribute information
 
 	//Scope the variable
 	glBindVertexArray(retval.vao);

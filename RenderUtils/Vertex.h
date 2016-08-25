@@ -8,4 +8,10 @@ struct Vertex
 	float binormal[4];
 	float texCoord[4];*/
 	float color[4];
+
+	enum
+	{
+		POSITION = 0,
+		COLOR = 16
+	};
 };

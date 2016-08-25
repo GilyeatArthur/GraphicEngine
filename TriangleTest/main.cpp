@@ -1,11 +1,16 @@
 
-#include "crenderutils.h"
-
+//#include "crenderutils.h"
+#include "window.h"
 //Context-Feature branch note
 int main()
 {
-	test();
+	Window window;
+	window.init(800, 600, "bleh");
 
+	while (window.step());
+
+	window.term();
+	
 	return 0;
 }
 

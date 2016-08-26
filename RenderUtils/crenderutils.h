@@ -13,6 +13,8 @@ struct Geometry
 Geometry makeGeometry(const struct Vertex *verts, size_t vsize, 
 					  const unsigned int	*tris,	size_t tsize);
 
+Geometry loadOBJ(const char *path);
+
 void freeGeometry(Geometry &);
 
 struct Shader

@@ -146,3 +146,38 @@ Shader loadShader(const char *vpath, const char *fpath)
 
 	return makeShader(vsource, fsource);
 }
+
+#define TINYOBJLOADER_IMPLEMENTATION // define this in only *one* .cc
+#include "OBJ/tiny_obj_loader.h"
+
+Geometry loadOBJ(const char *path)
+{
+	tinyobj::attrib_t attrib;
+	std::vector<tinyobj::shape_t> shapes;
+	std::vector<tinyobj::material_t> materials;
+	std::string err;
+	
+	bool ret = tinyobj::LoadObj(&attrib, &shapes, &materials, &err, path);
+
+	Vertex   *verts = new Vertex[attrib.vertices.size() / 3];
+	unsigned * tris = new unsigned[shapes[0].mesh.indices.size()];
+
+	for (int i = 0; i < attrib.vertices.size()/3; ++i)
+	{
+		verts[i] = { attrib.vertices[i*3],
+					 attrib.vertices[i*3+1],
+					 attrib.vertices[i*3+2], 1};
+		
+	}
+
+	for (int i = 0; i < shapes[0].mesh.indices.size(); ++i)
+		tris[i] = shapes[0].mesh.indices[i].vertex_index;
+
+	Geometry retval = makeGeometry(verts, attrib.vertices.size() / 3, 
+									tris, shapes[0].mesh.indices.size());
+
+	delete[] verts;
+	delete[] tris;
+
+	return retval;
+}

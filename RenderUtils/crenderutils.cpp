@@ -149,6 +149,7 @@ Shader loadShader(const char *vpath, const char *fpath)
 
 #define TINYOBJLOADER_IMPLEMENTATION // define this in only *one* .cc
 #include "OBJ/tiny_obj_loader.h"
+#include <random>
 
 Geometry loadOBJ(const char *path)
 {
@@ -168,6 +169,10 @@ Geometry loadOBJ(const char *path)
 					 attrib.vertices[i*3+1],
 					 attrib.vertices[i*3+2], 1};
 		
+		verts[i].color[0] = rand() * 1.0f / RAND_MAX;
+		verts[i].color[1] = rand() * 1.0f / RAND_MAX;
+		verts[i].color[2] = rand() * 1.0f / RAND_MAX;
+		verts[i].color[3] = 1;
 	}
 
 	for (int i = 0; i < shapes[0].mesh.indices.size(); ++i)

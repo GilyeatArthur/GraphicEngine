@@ -1,31 +1,28 @@
 
-#include "crenderutils.h"
+
 #include "window.h"
-#include "Vertex.h"
+#include "Gallery.h"
 
 int main()
 {
 	Window window;
-	window.init(800, 600, "bleh");
+	Gallery gallery;
 
-	Vertex	 vert[3] = { {   0,  .5f, 0, 1, 1,0,0,1},
-						 { .5f, -.5f, 0, 1, 1,0,0,1},
-						 {-.5f, -.5f, 0, 1, 1,0,0,1} };
-	unsigned tris[3] = {0, 1, 2};
+	window.init(800, 800, "bleh");
+	gallery.init();
 
-	//Geometry geometry1 = makeGeometry(vert, 3, tris, 9);
-	Geometry geometry = loadOBJ("../res/models/sphere.obj");
+	gallery.loadShader("FUN", "../res/shaders/simpleVert.txt",
+							  "../res/shaders/simpleFrag.txt");
 
-	Shader shader = loadShader("../res/shaders/simpleVert.txt",
-							   "../res/shaders/simpleFrag.txt");
+	gallery.loadObjectOBJ("SPHERE", "../res/models/sphere.obj");
+	
 
 	while (window.step())
 	{
-		draw(shader, geometry);
+		draw(gallery.getShader("FUN"),gallery.getObject("SPHERE"));
 	}
 
-	freeGeometry(geometry);
-	freeShader(shader);
+	gallery.term();
 	window.term();
 	return 0;
 }

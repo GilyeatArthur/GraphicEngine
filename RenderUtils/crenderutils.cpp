@@ -4,6 +4,11 @@
 #include "Vertex.h"
 
 #include <cstdio>
+#include <iostream>
+
+#include <fstream>
+#include <istream>
+#include <string>
 
 Geometry makeGeometry(const struct Vertex *verts, size_t vsize, const unsigned int	*tris, size_t tsize)
 {
@@ -88,4 +93,56 @@ void draw(const Shader &shader, const Geometry &geometry)
 	//using an array of indicies.
 	// IF AN IBO IS BOUND, we don't need to provide any indicies.
 	glDrawElements(GL_TRIANGLES, geometry.size, GL_UNSIGNED_INT, 0);
+}
+
+// this is C-style using fixed array size...
+// use whatever technique you are comfortable with!
+// load an entire file's text to an array so that loadShader can
+// use it to build the shader program!
+char * copyFileToArray(const char *path) //Thanks Riley!
+{
+	int array_size = 5012; // Define max size of array
+	char * array = new char[array_size]; // Make the array
+	int position = 0; // Used to keep track of position inside of the array
+
+	std::fstream fin(path); // Loading the file at 'path'
+
+	if (fin.is_open()) { // If we successfully opened the file
+		while (!fin.eof() && position < array_size) { // Continue to loop through the file til we get to the max array size we set earlier
+			fin.get(array[position]); // Grab the charater in the file
+			position++; // Increase are position in the arary
+		}
+		array[position - 1] = '\0'; // Make sure we don't have junk at the end
+
+		for (int i = 0; array[i] != '\0'; i++) {
+			std::cout << array[i]; // Just display the info
+		}
+	}
+
+	return array; // Return. duh
+}
+
+std::string cppStyleFileToString(const char *path)
+{
+	std::ifstream infile{ path };
+	std::string file_contents{ std::istreambuf_iterator<char>(infile),
+							   std::istreambuf_iterator<char>() };
+	return file_contents;
+}
+
+
+
+Shader loadShader(const char *vpath, const char *fpath)
+{
+	char * vsource; //max of 5012 characters in source
+	char * fsource; //will probably change that later
+
+	vsource = copyFileToArray(vpath);
+	fsource = copyFileToArray(fpath);
+
+	std::string vs = cppStyleFileToString(vpath);
+	std::string fs = cppStyleFileToString(fpath);
+	//return makeShader(vs.c_str(), fs.c_str());
+
+	return makeShader(vsource, fsource);
 }

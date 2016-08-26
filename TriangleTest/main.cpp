@@ -25,8 +25,11 @@ int main()
 		"out vec4 outColor;"
 		"void main () { outColor = vec4(0,0,0,0) + vColor; }";
 
-	Geometry geometry = makeGeometry(vert, 3, tris, 3);
-	Shader shader = makeShader(vsource, fsource);
+	Geometry geometry = makeGeometry(vert, 3, tris, 9);
+	Shader shader1 = makeShader(vsource, fsource);
+
+	Shader shader = loadShader("../res/shaders/simpleVert.txt",
+							   "../res/shaders/simpleFrag.txt");
 
 	while (window.step())
 	{

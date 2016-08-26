@@ -35,5 +35,8 @@
     <ClInclude Include="gldecs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Gallery.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

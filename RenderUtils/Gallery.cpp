@@ -1,3 +1,5 @@
+#include "gldecs.h"
+#include "crenderutils.h"
 #include "Gallery.h"
 
 bool Gallery::makeShader(const char * name, const char * vsource, const char * fsource)

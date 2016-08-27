@@ -1,7 +1,9 @@
 #pragma once
 #include <string>
 #include <map>
-#include "crenderutils.h"
+
+#include "globject.h"
+#include "Vertex.h"
 
 // Render Object  : A thing that we render, i.e. Geometry, Mesh, Polygons, etc.
 // Shader Program : Pipeline of shader scripts that divide and fill the screen.

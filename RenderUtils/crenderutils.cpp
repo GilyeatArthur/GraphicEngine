@@ -82,18 +82,7 @@ void freeShader(Shader &shader)
 	shader.handle = 0;
 }
 
-void draw(const Shader &shader, const Geometry &geometry)
-{
-	glUseProgram(shader.handle);
 
-	//binding the VAO also binds the IBO (tri) and VBO (verts)
-	glBindVertexArray(geometry.vao);
-
-	//Draw elements will draw the vertices that are currently bound
-	//using an array of indicies.
-	// IF AN IBO IS BOUND, we don't need to provide any indicies.
-	glDrawElements(GL_TRIANGLES, geometry.size, GL_UNSIGNED_INT, 0);
-}
 
 // this is C-style using fixed array size...
 // use whatever technique you are comfortable with!
@@ -185,4 +174,28 @@ Geometry loadOBJ(const char *path)
 	delete[] tris;
 
 	return retval;
+}
+
+void draw(const Shader &shader, const Geometry &geometry)
+{
+	glUseProgram(shader.handle);
+
+	//binding the VAO also binds the IBO (tri) and VBO (verts)
+	glBindVertexArray(geometry.vao);
+	
+	//Draw elements will draw the vertices that are currently bound
+	//using an array of indicies.
+	// IF AN IBO IS BOUND, we don't need to provide any indicies.
+	glDrawElements(GL_TRIANGLES, geometry.size, GL_UNSIGNED_INT, 0);
+}
+
+void draw(const Shader &shader, const Geometry &geometry, float time)
+{
+	glUseProgram(shader.handle);
+	glBindVertexArray(geometry.vao);
+
+	int loc = glGetUniformLocation(shader.handle, "time");
+	glUniform1f(loc, time);
+
+	glDrawElements(GL_TRIANGLES, geometry.size, GL_UNSIGNED_INT, 0);
 }

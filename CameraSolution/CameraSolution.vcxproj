@@ -73,11 +73,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Input.cpp" />
     <ClCompile Include="mainCam.cpp" />
-    <ClCompile Include="Time.cpp" />
+    <ClCompile Include="gotTime.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Time.h" />
+    <ClInclude Include="gotTime.h" />
+    <ClInclude Include="Input.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

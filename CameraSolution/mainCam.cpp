@@ -2,6 +2,8 @@
 
 #include "window.h"
 #include "Gallery.h"
+#include "gotTime.h"
+#include "Input.h"
 
 #include "GLM\glm.hpp"
 #include "GLM\ext.hpp"
@@ -10,9 +12,14 @@ int main()
 {
 	Window window;
 	Gallery gallery;
+	Input input;
+	GotTime time;
 
 	window.init(800, 800, "bleh");
 	gallery.init();
+	input.init(window);
+	time.init();
+
 
 	Vertex	 vert[] = { { 1, 1, 0, 1 },
 						{ 1, -1, 0, 1 },
@@ -44,30 +51,40 @@ int main()
 
 	model = glm::scale(glm::vec3(1.5f, 1.5f, 1.5f));
 
-
-	float time = 0;
+	float ct = 0;
+	float dt = 0;
 	while (window.step())
 	{
-		time += 0.01666f;
+		input.step();
+		time.step();
+		dt = time.getTotalTime();
+
 
 		view = glm::lookAt(glm::vec3(5.f, 5.f, 5.f),
 						   glm::vec3(0.f, 0.f, 0.f),
 						   glm::vec3(0.f, 1.f, 0.f));
 
-		model  = glm::rotate(time, glm::vec3(0, -1, 0));
-		model2 = glm::rotate(time, glm::vec3(-1, 1, 0));
-		model3 = glm::rotate(time, glm::vec3(-1, 1, -1));
-		model4 = glm::rotate(time, glm::vec3(-1, 1, 1));
 
-		drawCam(gallery.getShader("CAMERA"), 
-			gallery.getObject("SPHERE"), 
+		model = glm::rotate(dt, glm::vec3(-1, 1, -1));
+		model2 = glm::rotate(dt, glm::vec3(0, 1, -1));
+		model3 = glm::rotate(dt, glm::vec3(-1, 1, 0));
+		model4 = glm::rotate(dt, glm::vec3(dt, ct, dt));
+
+		if (input.getKeyState('D') == Input::DOWN)
+			ct += time.getDeltaTime();
+
+		if (input.getKeyState('A') == Input::DOWN)
+			ct -= time.getDeltaTime();
+
+		drawCam(gallery.getShader("CAMERA"),
+			gallery.getObject("CUBE"),
 			glm::value_ptr(model * glm::translate(glm::vec3(1.5, 1.5, 1.5))),
-			glm::value_ptr(view), 
+			glm::value_ptr(view),
 			glm::value_ptr(proj));
 
 		drawCam(gallery.getShader("CAMERA"),
 			gallery.getObject("CUBE"),
-			glm::value_ptr(model2 * glm::translate(glm::vec3(1.5,1.5,1.5))),
+			glm::value_ptr(model2 * glm::translate(glm::vec3(1.5, 1.5, 1.5))),
 			glm::value_ptr(view),
 			glm::value_ptr(proj));
 

@@ -1,7 +1,7 @@
 #pragma once
 
 
-class Time
+class GotTime
 {
 	float currentTime;
 	float previousTime;

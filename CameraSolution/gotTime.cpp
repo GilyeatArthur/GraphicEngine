@@ -1,13 +1,16 @@
 #include "GLFW\glfw3.h"
-#include "Time.h"
+#include "gotTime.h"
 
-bool Time::init()
+bool GotTime::init()
 {
 	glfwSetTime(0);
+	previousTime = 0;
+	currentTime = 0;
+	deltaTime = 0;
 	return true;
 }
 
-bool Time::step()
+bool GotTime::step()
 {
 	previousTime = currentTime;
 	currentTime = getRealTime();
@@ -16,22 +19,22 @@ bool Time::step()
 	return false;
 }
 
-bool Time::term()
+bool GotTime::term()
 {
 	return true;
 }
 
-float Time::getDeltaTime() const
+float GotTime::getDeltaTime() const
 {
 	return deltaTime;
 }
 
-float Time::getTotalTime() const
+float GotTime::getTotalTime() const
 {
 	return currentTime;
 }
 
-float Time::getRealTime() const
+float GotTime::getRealTime() const
 {
 	return glfwGetTime();
 }

@@ -16,3 +16,5 @@ Shader loadShader(const char *vpath, const char *fpath);
 void freeShader(Shader &);
 
 void draw(const Shader &, const Geometry &, float time);
+
+void drawCam(const Shader &s, const Geometry &g, const float *M, const float *V, const float *P);

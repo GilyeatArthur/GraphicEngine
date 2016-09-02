@@ -13,3 +13,8 @@ struct Shader
 {
 	unsigned handle;
 };
+
+struct Texture
+{
+
+};

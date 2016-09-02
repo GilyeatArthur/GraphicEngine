@@ -8,13 +8,19 @@ class FlyCamera
 
 	glm::vec3 position;
 	glm::vec3 direction;
-	glm::vec3 speed;
+
+	//Pitch is along the X
+	// Yaw is along the Y
+	//Roll is along the Z
+	float pitch, yaw, roll;
 
 	// make sure near is > 0
 	float aspect, fov, near, far;
+	float speed;
 public:
 	FlyCamera(float a_aspect = 16.f/9.f, float a_fov = 45.f, float a_near = 1, float a_far = 1000)
-		: aspect(a_aspect), fov(a_fov), near(a_near), far(a_far), direction(0, 0, 1), speed(20)
+		: aspect(a_aspect), fov(a_fov), near(a_near), far(a_far), 
+		direction(0, 0, 1), speed(20), pitch(0), yaw(0), roll(0)
 	{
 
 	}

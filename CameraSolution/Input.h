@@ -11,6 +11,9 @@ private:
 	struct GLFWwindow *winHandle;
 	KEY_STATE keys[350];
 
+	double mouseX, mouseY;
+	float mouseHorz, mouseVert;
+
 public:
 
 	bool init(const class Window &);
@@ -22,6 +25,15 @@ public:
 	{
 		return keys[key];
 	}
+	float getMouseAxisHorizontal() const
+	{
+		return mouseHorz;
+	}
+	float getMouseAxisVertical() const
+	{
+		return mouseVert;
+	}
+
 
 
 };

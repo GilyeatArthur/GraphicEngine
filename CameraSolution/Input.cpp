@@ -7,6 +7,14 @@ bool Input::init(const Window &window)
 {
 	memset(keys, 0, sizeof(keys));
 	winHandle = window.winHandle;
+
+	glfwSetInputMode(winHandle, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
+	mouseX = 0;
+	mouseY = 0;
+	mouseHorz = 0;
+	mouseVert = 0;
+
 	return true;
 }
 
@@ -34,6 +42,17 @@ bool Input::step()
 			keys[i] = UP;
 		}
 	}
+
+
+	double prevX = mouseX;
+	double prevY = mouseY;
+	glfwGetCursorPos(winHandle, &mouseX, &mouseY);
+
+	mouseHorz = mouseX - prevX;
+	mouseVert = mouseY - prevY;
+
+	//pritnf("%f %f\n", mouseX, mouseY);
+
 	return true;
 }
 

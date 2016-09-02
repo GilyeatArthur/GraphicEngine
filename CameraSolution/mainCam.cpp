@@ -34,7 +34,7 @@ int main()
 	gallery.makeObject("quad", vert, 4, tris, 6);
 	gallery.loadObjectOBJ("SPHERE", "../res/models/sphere.obj");
 	gallery.loadObjectOBJ("CUBE", "../res/models/cube.obj");
-	gallery.loadObjectOBJ("CITY", "../res/models/Organodron_City.obj");
+	//gallery.loadObjectOBJ("CITY", "../res/models/Organodron_City.obj");
 
 
 	float IDENTITY[16] = { 1,0,0,0,
@@ -42,7 +42,7 @@ int main()
 						  0,0,1,0,
 						  0,0,0,1 };
 
-	glm::mat4 model, view, proj;
+	glm::mat4 model, view, proj, model3;
 
 
 	proj = glm::ortho<float>(-10, 10, -10, 10, -10, 10);
@@ -52,6 +52,8 @@ int main()
 	
 	model = glm::scale(glm::vec3(1.5f, 1.5f, 1.5f));
 
+	model3 = glm::translate(glm::vec3(-10, 0, 0))  * glm::rotate(180.f, glm::vec3(0, 1, 0)) * glm::scale(glm::vec3(5, 5, 5));
+
 	float ct = 0;
 
 	FlyCamera cam;
@@ -60,31 +62,30 @@ int main()
 
 	while (window.step())
 	{
-		input.step();
 		time.step();
-		
+		input.step();
+
+	
+		cam.update(input, time);
 		view = cam.getView();
 		proj = cam.getProjection();
 		
 		cam.update(input, time);
 
+		ct += time.getDeltaTime();
 
 
-		/*view = glm::lookAt(glm::vec3(5.f, 5.f, 5.f),
-						   glm::vec3(0.f, 0.f, 0.f),
-						   glm::vec3(0.f, 1.f, 0.f));
-*/
 
-		model = glm::translate(glm::vec3(1, 1, ct)) *
-				glm::rotate(ct, glm::vec3(1, 1, 1));
+		model = glm::translate(glm::vec3(0, ct, 0)) *
+				glm::rotate(ct, glm::vec3(0, 1, 0));
 
 
 
 		drawCam(gallery.getShader("CAMERA"),
-			gallery.getObject("CITY"),
-			glm::value_ptr(model),
+			gallery.getObject("CUBE"),
+			glm::value_ptr(model3),
 			glm::value_ptr(view),
-			glm::value_ptr(proj));
+			glm::value_ptr(proj), ct);
 
 
 	}

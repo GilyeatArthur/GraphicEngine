@@ -9,7 +9,7 @@ void FlyCamera::update(const Input &in, const GotTime &t)
 	glm::vec3 up      = glm::cross(right, direction);*/
 
 	yaw -= in.getMouseAxisHorizontal() * t.getDeltaTime() * .1;
-	pitch -= in.getMouseAxisVertical() * t.getDeltaTime() * .1;
+	pitch += in.getMouseAxisVertical() * t.getDeltaTime() * .1;
 
 	// pitch should only be valid between 90 and -90 degrees
 

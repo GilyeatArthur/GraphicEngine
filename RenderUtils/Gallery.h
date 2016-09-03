@@ -12,6 +12,7 @@ class Gallery
 {
 	std::map<std::string, Geometry> objects;
 	std::map<std::string, Shader>   shaders;
+	std::map<std::string, Texture> textures;
 public:
 	//Shader makeShader(vsource, fsource)
 	bool makeShader(const char *name, const char* vsource, const char *fsource);
@@ -22,8 +23,11 @@ public:
 
 	bool loadObjectOBJ(const char *name, const char *path);
 
+	bool loadTexture(const char *name, const char *path);
+
 	const Geometry &getObject(const char *name);
 	const Shader   &getShader(const char *name);
+	const Texture  &getTexture(const char *name);
 
 	bool init();
 	bool term();

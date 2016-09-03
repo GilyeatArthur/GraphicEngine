@@ -16,5 +16,8 @@ struct Shader
 
 struct Texture
 {
+	unsigned handle;
+	unsigned width, height, format;
+
 
 };

@@ -38,21 +38,49 @@ bool Gallery::makeObject(const char *name, const Vertex *verts, size_t vsize, co
 
 bool Gallery::loadObjectOBJ(const char *name, const char *path)
 {
-	objects[name] = ::loadOBJ(path);
+	if (!shaders.count(name))
+	{
+		objects[name] = ::loadOBJ(path);
+		if (objects[name].size == 0)
+		{
+			objects.erase(name);
+		}
+		return true;
+	}
+	else
+	{
 
-	return true;
+	}
 }
 
-const Geometry &Gallery::getObject(const char * name)
+bool Gallery::loadTexture(const char *name, const char *path)
+{
+	if (!shaders.count(name))
+	{
+		textures[name] = ::loadTexture(path);
+		if (textures[name].handle == 0)
+		{
+
+		}
+		return true;
+	}
+}
+
+const Geometry &Gallery::getObject(const char *name)
 {
 	// need to validate the name first.
 	return objects[name];
 }
 
-const Shader &Gallery::getShader(const char * name)
+const Shader &Gallery::getShader(const char *name)
 {
 	// need to validate the name first.
 	return shaders[name];
+}
+
+const Texture &Gallery::getTexture(const char *name)
+{
+	return textures[name];
 }
 
 bool Gallery::term()

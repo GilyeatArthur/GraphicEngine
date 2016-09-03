@@ -21,6 +21,11 @@ int main()
 	input.init(window);
 	time.init();
 
+	unsigned char pixels[] = { 255, 255, 0 };
+	//Texture tex = makeTexture(1, 1, 0x1907, pixels);
+
+	Texture tex = loadTexture("../res/textures/crate.jpg");
+
 
 	Vertex	 vert[] = { { 1, 1, 0, 1 },
 						{ 1, -1, 0, 1 },
@@ -30,12 +35,17 @@ int main()
 	unsigned tris[] = { 0,1,2, 2,3,0 };
 
 	gallery.loadShader("CAMERA", "../res/shaders/cameraVert.txt",
-		"../res/shaders/cameraFrag.txt");
+								 "../res/shaders/cameraFrag.txt");
+
+	gallery.loadShader("TEXTURE", "../res/shaders/textureVert.txt",
+								  "../res/shaders/textureFrag.txt");
+
 	gallery.makeObject("quad", vert, 4, tris, 6);
 	gallery.loadObjectOBJ("SPHERE", "../res/models/sphere.obj");
 	gallery.loadObjectOBJ("CUBE", "../res/models/cube.obj");
-	//gallery.loadObjectOBJ("CITY", "../res/models/Organodron_City.obj");
+	gallery.loadObjectOBJ("CITY", "../res/models/Organodron_City.obj");
 
+	gallery.loadTexture("BOX", "../res/textures/PrizeBox.png");
 
 	float IDENTITY[16] = { 1,0,0,0,
 						  0,1,0,0,
@@ -47,7 +57,7 @@ int main()
 
 	proj = glm::ortho<float>(-10, 10, -10, 10, -10, 10);
 
-	proj = glm::perspective(45.f, 1.f, .001f, 100.f);
+	proj = glm::perspective(45.f, 1.f, .001f, 10000.f);
 
 	
 	model = glm::scale(glm::vec3(1.5f, 1.5f, 1.5f));
@@ -81,14 +91,23 @@ int main()
 
 
 
-		drawCam(gallery.getShader("CAMERA"),
-			gallery.getObject("CUBE"),
+		//drawCam(gallery.getShader("CAMERA"),
+		//	gallery.getObject("CUBE"),
+		//	glm::value_ptr(model3),
+		//	glm::value_ptr(view),
+		//	glm::value_ptr(proj), ct);
+
+		drawTex(gallery.getShader("TEXTURE"),
+			gallery.getObject("CITY"), 
+			gallery.getTexture("BOX"),
 			glm::value_ptr(model3),
 			glm::value_ptr(view),
 			glm::value_ptr(proj), ct);
 
 
 	}
+
+	freeTexture(tex);
 
 	gallery.term();
 	window.term();

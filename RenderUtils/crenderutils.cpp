@@ -6,9 +6,37 @@
 #include <cstdio>
 #include <iostream>
 
+#define STB_IMAGE_IMPLEMENTATION
+#include "STB\stb_image.h"
+
 #include <fstream>
 #include <istream>
 #include <string>
+
+
+Texture loadTexture(const char *path)
+{
+	int w, h, f;
+	unsigned char *p;
+
+	Texture retval = { 0,0,0,0 };
+
+	p = stbi_load(path, &w, &h, &f, STBI_default);
+
+	if (!p) return retval;
+
+	switch (f)
+	{
+	case STBI_grey:		 f = GL_RED;  break;
+	case STBI_grey_alpha:f = GL_RG;   break;
+	case STBI_rgb:		 f = GL_RGB;  break;
+	case STBI_rgb_alpha: f = GL_RGBA; break;
+	}
+
+	retval = makeTexture(w, h, f, p);
+	stbi_image_free(p);
+	return retval;
+}
 
 Geometry makeGeometry(const struct Vertex *verts, size_t vsize, const unsigned int	*tris, size_t tsize)
 {
@@ -213,6 +241,54 @@ void drawCam(const Shader &s, const Geometry &g, const float M[16], const float 
 	glUniformMatrix4fv(2, 1, GL_FALSE, M);
 
 	glUniform1f(3, time);
+
+	glDrawElements(GL_TRIANGLES, g.size, GL_UNSIGNED_INT, 0);
+}
+
+
+Texture makeTexture(unsigned width, unsigned height, unsigned format, const unsigned char *pixels)
+{
+	Texture retval = { 0, width, format };
+
+	glGenTextures(1, &retval.handle);
+	glBindTexture(GL_TEXTURE_2D, retval.handle);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, pixels);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+
+
+	return retval;
+}
+
+void freeTexture(Texture &t)
+{
+	glDeleteTextures(1, &t.handle);
+	t = { 0,0,0,0 };
+}
+
+void drawTex(const Shader &s, const Geometry &g, const Texture &t, const float M[16], const float V[16], const float P[16], float time)
+{
+	glEnable(GL_CULL_FACE);
+	glEnable(GL_DEPTH_TEST);
+
+	glUseProgram(s.handle);
+	glBindVertexArray(g.vao);
+
+	glUniformMatrix4fv(0, 1, GL_FALSE, P);
+	glUniformMatrix4fv(1, 1, GL_FALSE, V);
+	glUniformMatrix4fv(2, 1, GL_FALSE, M);
+
+	glUniform1f(3, time);
+
+	//Minimum guaranteed is 8 textures
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, t.handle);
+	glUniform1i(4, 0);
 
 	glDrawElements(GL_TRIANGLES, g.size, GL_UNSIGNED_INT, 0);
 }

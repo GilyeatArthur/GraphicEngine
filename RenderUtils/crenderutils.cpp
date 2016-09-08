@@ -13,7 +13,7 @@
 #include <istream>
 #include <string>
 
-
+//lighting start
 Texture loadTexture(const char *path)
 {
 	int w, h, f;

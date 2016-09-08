@@ -87,6 +87,7 @@
   <ItemGroup>
     <ClCompile Include="crenderutils.cpp" />
     <ClCompile Include="Gallery.cpp" />
+    <ClCompile Include="GridMaker.cpp" />
     <ClCompile Include="window.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -94,6 +95,7 @@
     <ClInclude Include="Gallery.h" />
     <ClInclude Include="gldecs.h" />
     <ClInclude Include="globject.h" />
+    <ClInclude Include="GridMaker.h" />
     <ClInclude Include="Vertex.h" />
     <ClInclude Include="window.h" />
   </ItemGroup>

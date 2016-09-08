@@ -23,8 +23,9 @@ void drawCam(const Shader &s, const Geometry &g, const float *M, const float *V,
 // R   G   B   A
 //#FF  FF  FF  FF
 Texture makeTexture(unsigned width, unsigned height, unsigned format, const unsigned char *pixels);
+Texture makeTextureF(unsigned square, const float *pixels);
 
 void freeTexture(Texture &t);
 
-void drawTex(const Shader &s, const Geometry &g, const Texture &, const float *M, const float *V, const float *P, float time);
+void drawTex(const Shader &, const Geometry &, const Texture &, const float M[16], const float V[16], const float P[16], float time);
 

@@ -72,5 +72,6 @@ Texture genNoise(unsigned sqr, unsigned octaves)
 
 
 		Texture retval = makeTextureF(sqr, noise);
+		delete[] noise;
 		return retval;
 }

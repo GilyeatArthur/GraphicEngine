@@ -13,7 +13,7 @@
 #include <istream>
 #include <string>
 
-//lighting start
+
 Texture loadTexture(const char *path)
 {
 	int w, h, f;
@@ -190,15 +190,19 @@ Geometry loadOBJ(const char *path)
 
 	for (int i = 0; i < vsize; ++i)
 	{
-		auto &ind = shapes[0].mesh.indices[i];
+		auto ind = shapes[0].mesh.indices[i];
 
 		const float *n = &attrib.normals[ind.normal_index * 3];
 		const float *p = &attrib.vertices[ind.vertex_index * 3];
-		const float *t = &attrib.texcoords[ind.texcoord_index * 2];
 
 		verts[i].position = glm::vec4(p[0], p[1], p[2], 1.f);
 		verts[i].normal = glm::vec4(n[0], n[1], n[2], 0.f);
-		verts[i].texCoord = glm::vec2(t[0], t[1]);
+		
+		if (ind.texcoord_index >= 0)
+		{
+			const float *t = &attrib.texcoords[ind.texcoord_index * 2];
+			verts[i].texCoord = glm::vec2(t[0], t[1]);
+		}
 
 		tris[i] = i;
 	}
@@ -324,3 +328,29 @@ void drawTex(const Shader &s, const Geometry &g, const Texture &t, const float M
 
 	glDrawElements(GL_TRIANGLES, g.size, GL_UNSIGNED_INT, 0);
 }
+
+void drawPhong(const Shader & s, const Geometry & g, const float M[16], const float V[16], const float P[16], const Texture *T, unsigned t_count)
+{
+	glEnable(GL_CULL_FACE);
+	glEnable(GL_DEPTH_TEST);
+
+	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
+	glUseProgram(s.handle);
+	glBindVertexArray(g.vao);
+
+	
+	glUniformMatrix4fv(0, 1, GL_FALSE, P);
+	glUniformMatrix4fv(1, 1, GL_FALSE, V);
+	glUniformMatrix4fv(2, 1, GL_FALSE, M);
+	
+	for (int i = 0; i < t_count; ++i)
+	{
+		glActiveTexture(GL_TEXTURE0 + i);
+		glBindTexture(GL_TEXTURE_2D, T[i].handle);
+		glUniform1i(3 + i, 0 + i);
+	}
+	
+	glDrawElements(GL_TRIANGLES, g.size, GL_UNSIGNED_INT, 0);
+}
+

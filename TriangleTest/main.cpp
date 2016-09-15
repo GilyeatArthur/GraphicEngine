@@ -7,6 +7,8 @@
 #include "GLM\glm.hpp"
 #include "GLM\ext.hpp"
 
+//frame buffering
+
 int main()
 {
 	Window window;

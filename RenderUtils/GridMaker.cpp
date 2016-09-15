@@ -3,6 +3,7 @@
 #include "Vertex.h"
 #include "GLM\geometric.hpp"
 
+
 Geometry genGrid(unsigned sqr, float dim)
 {
 	unsigned vsize = sqr*sqr;
@@ -46,18 +47,26 @@ Geometry genGrid(unsigned sqr, float dim)
 }
 
 #include "GLM\gtc\noise.hpp"
+#include "gotTime.h"
+
+
+
 
 Texture genNoise(unsigned sqr, unsigned octaves)
 {
 	float *noise = new float[sqr*sqr];
 	float scale = 1.0f / sqr * 3.f;
+	
+	GotTime time;
+	float ct = 0;
+	ct += time.getDeltaTime();
 
 	for (int x = 0; x < sqr; ++x)
 	{
 		for (int y = 0; y < sqr; ++y)
 		{
 			float amplitude = 1.f;
-			float persistence = 0.25f;
+			float persistence = .25f;
 			noise[y*sqr + x] = 0;
 			for (int o = 0; o < octaves; ++o)
 			{

@@ -1,6 +1,7 @@
 #include "GLFW\glfw3.h"
 #include "window.h"
 #include "Input.h"
+#include <cstdio>
 #include <cstring>
 
 bool Input::init(const Window &window)

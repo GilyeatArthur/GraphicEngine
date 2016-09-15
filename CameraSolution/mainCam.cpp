@@ -72,6 +72,9 @@ int main()
 		proj = cam.getProjection();
 		
 		cam.update(input, time);
+/*
+		Geometry plane = genGrid(512, 2);
+		Texture	 noise = genNoise(68, 8);*/
 
 		model = glm::translate(glm::vec3(0, 0, 1)) *
 				glm::rotate(ct, glm::vec3(0, 0, 0));
@@ -88,12 +91,12 @@ int main()
 				 glm::scale(glm::vec3(5, 5, 5));
 
 
-		drawTex(gallery.getShader("TEXTURE"),
-			plane,
-			noise,
-			glm::value_ptr(model3),
-			glm::value_ptr(view),
-			glm::value_ptr(proj), ct);
+		//drawTex(gallery.getShader("TEXTURE"),
+		//	plane,
+		//	noise,
+		//	glm::value_ptr(model3),
+		//	glm::value_ptr(view),
+		//	glm::value_ptr(proj), ct);
 
 
 	}

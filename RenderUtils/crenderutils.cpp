@@ -101,6 +101,18 @@ Shader makeShader(const char * vsource, const char * fsource)
 	glAttachShader(retval.handle, vs);
 	glAttachShader(retval.handle, fs);
 	glLinkProgram(retval.handle);
+	GLint program_linked;
+	glGetProgramiv(retval.handle, GL_LINK_STATUS, &program_linked);
+	if (program_linked != GL_TRUE)
+	{
+		GLsizei log_length = 0;
+		GLchar message[1024];
+		glGetProgramInfoLog(retval.handle, 1024, &log_length, message);
+		fprintf(stderr, message);
+
+		// Write the error to a log
+	}
+
 	//No longer need these. Their functionality has been eaten by the program
 	glDeleteShader(vs);
 	glDeleteShader(fs);
@@ -329,7 +341,9 @@ void drawTex(const Shader &s, const Geometry &g, const Texture &t, const float M
 	glDrawElements(GL_TRIANGLES, g.size, GL_UNSIGNED_INT, 0);
 }
 
-void drawPhong(const Shader & s, const Geometry & g, const float M[16], const float V[16], const float P[16], const Texture *T, unsigned t_count)
+void drawPhong(const Shader &s, const Geometry &g, 
+			   const float M[16], const float V[16], const float P[16], 
+			   const Texture *T, unsigned t_count)
 {
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
@@ -344,7 +358,8 @@ void drawPhong(const Shader & s, const Geometry & g, const float M[16], const fl
 	glUniformMatrix4fv(1, 1, GL_FALSE, V);
 	glUniformMatrix4fv(2, 1, GL_FALSE, M);
 	
-	for (int i = 0; i < t_count; ++i)
+	int i = 0;
+	for (; i < t_count; ++i)
 	{
 		glActiveTexture(GL_TEXTURE0 + i);
 		glBindTexture(GL_TEXTURE_2D, T[i].handle);

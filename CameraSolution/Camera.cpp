@@ -31,8 +31,8 @@ void FlyCamera::update(const Input &in, const GotTime &t)
 
 	if (in.getKeyState('W') == Input::DOWN)	moveDir += direction;
 	if (in.getKeyState('S') == Input::DOWN)	moveDir -= direction;
-	if (in.getKeyState('A') == Input::DOWN)	moveDir -= right;
-	if (in.getKeyState('D') == Input::DOWN)	moveDir += right;
+	if (in.getKeyState('A') == Input::DOWN)	moveDir += right;
+	if (in.getKeyState('D') == Input::DOWN)	moveDir -= right;
 	if (in.getKeyState('E') == Input::DOWN)	moveDir -= up;
 	if (in.getKeyState('Q') == Input::DOWN)	moveDir += up;
 

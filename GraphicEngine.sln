@@ -16,6 +16,12 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CameraSolution", "CameraSol
 		{D8CE5B46-3E16-4A10-A4E8-3A458D612522} = {D8CE5B46-3E16-4A10-A4E8-3A458D612522}
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{1FF52DF2-EDD8-43F7-817E-3E5ABED3172F}"
+	ProjectSection(SolutionItems) = preProject
+		res\shaders\phongFrag.glsl = res\shaders\phongFrag.glsl
+		res\shaders\phongVert.glsl = res\shaders\phongVert.glsl
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64

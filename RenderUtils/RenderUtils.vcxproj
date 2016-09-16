@@ -10,6 +10,27 @@
       <Platform>Win32</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="crenderutils.cpp" />
+    <ClCompile Include="Gallery.cpp" />
+    <ClCompile Include="gotTime.cpp" />
+    <ClCompile Include="GridMaker.cpp" />
+    <ClCompile Include="Input.cpp" />
+    <ClCompile Include="window.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Camera.h" />
+    <ClInclude Include="crenderutils.h" />
+    <ClInclude Include="Gallery.h" />
+    <ClInclude Include="gldecs.h" />
+    <ClInclude Include="globject.h" />
+    <ClInclude Include="gotTime.h" />
+    <ClInclude Include="GridMaker.h" />
+    <ClInclude Include="Input.h" />
+    <ClInclude Include="Vertex.h" />
+    <ClInclude Include="window.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{D8CE5B46-3E16-4A10-A4E8-3A458D612522}</ProjectGuid>
     <RootNamespace>RenderUtils</RootNamespace>
@@ -84,21 +105,6 @@
       <LinkLibraryDependencies>true</LinkLibraryDependencies>
     </ProjectReference>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="crenderutils.cpp" />
-    <ClCompile Include="Gallery.cpp" />
-    <ClCompile Include="GridMaker.cpp" />
-    <ClCompile Include="window.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="crenderutils.h" />
-    <ClInclude Include="Gallery.h" />
-    <ClInclude Include="gldecs.h" />
-    <ClInclude Include="globject.h" />
-    <ClInclude Include="GridMaker.h" />
-    <ClInclude Include="Vertex.h" />
-    <ClInclude Include="window.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

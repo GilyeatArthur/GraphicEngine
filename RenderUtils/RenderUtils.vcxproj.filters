@@ -15,39 +15,57 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="crenderutils.cpp">
+    <ClCompile Include="Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="window.cpp">
+    <ClCompile Include="crenderutils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Gallery.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="gotTime.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="GridMaker.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Input.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="window.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Camera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="crenderutils.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="window.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Vertex.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="gldecs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Gallery.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="gldecs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="globject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="gotTime.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="GridMaker.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Input.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Vertex.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="window.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

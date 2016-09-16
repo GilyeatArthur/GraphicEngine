@@ -21,6 +21,7 @@ Texture loadTexture(const char *path)
 
 	Texture retval = { 0,0,0,0 };
 
+	stbi_set_flip_vertically_on_load(true);
 	p = stbi_load(path, &w, &h, &f, STBI_default);
 
 	if (!p) return retval;
@@ -273,22 +274,22 @@ Texture makeTexture(unsigned width, unsigned height, unsigned format, const unsi
 {
 	Texture retval = { 0, width, height, format };
 
-	glGenTextures(1, &retval.handle);				// Declaration
-	glBindTexture(GL_TEXTURE_2D, retval.handle);	// Scoping
+glGenTextures(1, &retval.handle);				// Declaration
+glBindTexture(GL_TEXTURE_2D, retval.handle);	// Scoping
 
-	glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, pixels);
+glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, pixels);
 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
-	glBindTexture(GL_TEXTURE_2D, 0);
+glBindTexture(GL_TEXTURE_2D, 0);
 
 
 
-	return retval;
+return retval;
 }
 
 Texture makeTextureF(unsigned square, const float * pixels)
@@ -341,9 +342,9 @@ void drawTex(const Shader &s, const Geometry &g, const Texture &t, const float M
 	glDrawElements(GL_TRIANGLES, g.size, GL_UNSIGNED_INT, 0);
 }
 
-void drawPhong(const Shader &s, const Geometry &g, 
-			   const float M[16], const float V[16], const float P[16], 
-			   const Texture *T, unsigned t_count)
+void drawPhong(const Shader &s, const Geometry &g,
+	const float M[16], const float V[16], const float P[16],
+	const Texture *T, unsigned t_count)
 {
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
@@ -353,11 +354,11 @@ void drawPhong(const Shader &s, const Geometry &g,
 	glUseProgram(s.handle);
 	glBindVertexArray(g.vao);
 
-	
+
 	glUniformMatrix4fv(0, 1, GL_FALSE, P);
 	glUniformMatrix4fv(1, 1, GL_FALSE, V);
 	glUniformMatrix4fv(2, 1, GL_FALSE, M);
-	
+
 	int i = 0;
 	for (; i < t_count; ++i)
 	{
@@ -365,7 +366,78 @@ void drawPhong(const Shader &s, const Geometry &g,
 		glBindTexture(GL_TEXTURE_2D, T[i].handle);
 		glUniform1i(3 + i, 0 + i);
 	}
-	
+
 	glDrawElements(GL_TRIANGLES, g.size, GL_UNSIGNED_INT, 0);
 }
+
+Framebuffer makeFramebuffer(unsigned width, unsigned height, unsigned nColors)
+{
+	Framebuffer retval = { 0, width, height, nColors,0,0,0,0,0,0,0 };
+
+	glGenFramebuffers(1, &retval.handle);
+	glBindFramebuffer(GL_FRAMEBUFFER, retval.handle);
+
+	//////////////////////////////////////////////////////////////////////////////////
+	retval.depth = makeTexture(width, height, GL_DEPTH_COMPONENT, 0);
+	glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, retval.depth.handle, 0);
+	//////////////////////////////////////////////////////////////////////////////////
+
+	const GLenum attachments[8] = { GL_COLOR_ATTACHMENT0,GL_COLOR_ATTACHMENT1,
+									GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3,
+									GL_COLOR_ATTACHMENT4, GL_COLOR_ATTACHMENT5,
+									GL_COLOR_ATTACHMENT6, GL_COLOR_ATTACHMENT7 };
+
+	for (int i = 0; i < nColors && i < 8; ++i)
+	{
+		retval.colors[i] = makeTexture(width, height, GL_RGBA, 0);
+		glFramebufferTexture(GL_FRAMEBUFFER, attachments[i], retval.colors[i].handle, 0);
+	}
+
+	glDrawBuffers(nColors, attachments);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	return retval;
+}
+
+void freeFramebuffer(Framebuffer &fb)
+{
+	for (unsigned i = 0; i < fb.nColors; ++i)
+	{
+		freeTexture(fb.colors[i]);
+	}
+
+	glDeleteFramebuffers(1, &fb.handle);
+	fb = { 0,0,0,0 };
+}
+
+void clearFramebuffer(const Framebuffer &f)
+{
+	glBindFramebuffer(GL_FRAMEBUFFER, f.handle);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
+
+void drawFB(const Shader & s, const Geometry & g, const Framebuffer & f, const float M[16], const float V[16], const float P[16], const Texture * T, unsigned t_count)
+{
+	glEnable(GL_CULL_FACE);
+	glEnable(GL_DEPTH_TEST);
+
+	glBindFramebuffer(GL_FRAMEBUFFER, f.handle);
+	glUseProgram(s.handle);
+	glBindVertexArray(g.vao);
+
+	glViewport(0, 0, f.width, f.height);
+
+	glUniformMatrix4fv(0, 1, GL_FALSE, P);
+	glUniformMatrix4fv(1, 1, GL_FALSE, V);
+	glUniformMatrix4fv(2, 1, GL_FALSE, M);
+
+	for (int i = 0; i < t_count; ++i)
+	{
+		glActiveTexture(GL_TEXTURE0 + i);
+		glBindTexture(GL_TEXTURE_2D, T[i].handle);
+		glUniform1i(3 + i, 0 + i);
+	}
+
+	glDrawElements(GL_TRIANGLES, g.size, GL_UNSIGNED_INT, 0);
+}
+
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "globject.h"
+#include "globjs.h"
 
 Geometry genGrid(unsigned sqr, float dim);
 

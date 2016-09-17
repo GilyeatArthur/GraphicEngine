@@ -1,6 +1,12 @@
 #pragma once
 
-#include "globject.h"
+#include "Vertex.h"
+#include "window.h"
+
+#include "globjs.h"
+#include "glmake.h"
+#include "glload.h"
+#include "gldraw.h"
 
 Texture loadTexture(const char *path);
 

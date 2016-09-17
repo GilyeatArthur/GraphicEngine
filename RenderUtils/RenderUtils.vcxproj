@@ -14,6 +14,9 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="crenderutils.cpp" />
     <ClCompile Include="Gallery.cpp" />
+    <ClCompile Include="gldraw.cpp" />
+    <ClCompile Include="glload.cpp" />
+    <ClCompile Include="glmake.cpp" />
     <ClCompile Include="gotTime.cpp" />
     <ClCompile Include="GridMaker.cpp" />
     <ClCompile Include="Input.cpp" />
@@ -24,7 +27,10 @@
     <ClInclude Include="crenderutils.h" />
     <ClInclude Include="Gallery.h" />
     <ClInclude Include="gldecs.h" />
-    <ClInclude Include="globject.h" />
+    <ClInclude Include="gldraw.h" />
+    <ClInclude Include="glload.h" />
+    <ClInclude Include="glmake.h" />
+    <ClInclude Include="globjs.h" />
     <ClInclude Include="gotTime.h" />
     <ClInclude Include="GridMaker.h" />
     <ClInclude Include="Input.h" />

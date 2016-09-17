@@ -2,7 +2,7 @@
 #include <string>
 #include <map>
 
-#include "globject.h"
+#include "globjs.h"
 #include "Vertex.h"
 
 // Render Object  : A thing that we render, i.e. Geometry, Mesh, Polygons, etc.

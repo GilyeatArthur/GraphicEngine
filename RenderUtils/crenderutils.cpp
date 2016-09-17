@@ -2,7 +2,7 @@
 
 #include "crenderutils.h"
 #include "Vertex.h"
-
+#include "globjs.h"
 #include <cstdio>
 #include <iostream>
 
@@ -16,6 +16,8 @@
 
 Texture loadTexture(const char *path)
 {
+	glog("loading Texture", path);
+
 	int w, h, f;
 	unsigned char *p;
 
@@ -101,7 +103,7 @@ Shader makeShader(const char * vsource, const char * fsource)
 	//link the shaders into a single program
 	glAttachShader(retval.handle, vs);
 	glAttachShader(retval.handle, fs);
-	glLinkProgram(retval.handle);
+	glog_glLinkProgram(retval.handle);
 	GLint program_linked;
 	glGetProgramiv(retval.handle, GL_LINK_STATUS, &program_linked);
 	if (program_linked != GL_TRUE)

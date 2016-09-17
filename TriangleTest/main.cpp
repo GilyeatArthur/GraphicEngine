@@ -1,104 +1,40 @@
 
 
 #include "crenderutils.h"
-#include "window.h"
-#include "Input.h"
-#include "Vertex.h"
-#include "gotTime.h"
-#include "Camera.h"
 
-
-#include "GLM\glm.hpp"
 #include "GLM\ext.hpp"
 
-
-
-int main()
+void main()
 {
-	Window window;
-	Input input;
-	GotTime time;
-	
-	window.init(1280, 720, "Bleh");
-	input.init(window);
-	time.init();
+	Window context;
+	context.init(1280, 720, "bleh");
 
-	glm::mat4 view = glm::lookAt(glm::vec3(0.f, 1.5f, 20.f),  // eye
-								 glm::vec3(0.f, 1.5f, 0.f),  // center
-								 glm::vec3(0.f, 1.f, 0.f)); // up
+	Framebuffer screen = { 0,1280,720 };
 
-	glm::mat4 proj = glm::perspective(45.f, 16 / 9.f, 1.f, 100.f);
-	glm::mat4 modelC, modelSS;
+	Geometry quad = makeGeometry(quad_verts, 4, quad_tris, 6);
 
-	Geometry cube = loadOBJ("../res/models/cube.obj");
-	Geometry soulS = loadOBJ("../res/models/soulspear.obj");
+	Shader simple = loadShader("../res/shaders/simple.vert", "../res/shaders/simple.frag");
 
-	Shader   shader = loadShader("../res/shaders/phongVert.glsl",
-								 "../res/shaders/phongFrag.glsl");
+	Texture img = loadTexture("../res/textures/Dr BEES.jpg");
 
-	Texture tarray[] = { loadTexture("../res/textures/soulspear_diffuse.tga"),
-						 loadTexture("../res/textures/soulspear_specular.tga"),
-						 loadTexture("../res/textures/soulspear_normal.tga") };
+	Geometry spear = loadOBJ("../res/models/soulspear.obj");
 
-	Framebuffer frame = makeFramebuffer(1280, 720, 1);
-	Framebuffer screen = { 0, 1280, 720, 1 };
+	Texture spear_normal = loadTexture("../res/textures/soulspear_normal.tga");
+	Texture spear_diffuse = loadTexture("../res/textures/soulspear_diffuse.tga");
+	Texture spear_specular = loadTexture("../res/textures/soulspear_specular.tga");
 
-	Vertex verts[4] = { {{-1,-1,0,1},{},{},{0,0}},
-						{{1,-1,0,1},{},{},{1,0}},
-						{{1,1,0,1},{},{},{1,1}},
-						{{-1,1,0,1},{},{},{0,1}} };
+	glm::mat4 model, view, proj;
 
-	unsigned tris[] = { 0,1,2,2,3,0 };
-	
-	Geometry quad = makeGeometry(verts, 4, tris, 6);
+	model = glm::translate(glm::vec3(0, -1, 0));
+	view = glm::lookAt(glm::vec3(0, 0, 10), glm::vec3(0, 2, 0), glm::vec3(0, 1, 0));
+	proj = glm::perspective(45.f, 1280.f / 720, 1.f, 100.f);
 
-	Shader post = loadShader("../res/shaders/postVert.glsl", 
-							 "../res/shaders/postFrag.glsl");
-	float ct = 0;
-
-	FlyCamera cam;
-
-	while (window.step())
+	float time = 0;
+	while (context.step())
 	{
-		clearFramebuffer(frame);
-		time.step();
-		input.step();
-		
-		ct += time.getDeltaTime();
-		view = cam.getView();
-		proj = cam.getProjection();
-		cam.update(input, time);
-
-		view = glm::lookAt(glm::vec3(4,1,0), glm::vec3(0,1,0), glm::vec3(0,1,0));
-
-		modelC  = glm::rotate(ct, glm::normalize(glm::vec3(0, 1.f, 0)));
-		modelSS = glm::rotate(ct, glm::normalize(glm::vec3(0, .5f, 0)));
-
-		//drawFB(post, quad, frame,
-		//	glm::value_ptr(modelC),
-		//	glm::value_ptr(view),
-		//	glm::value_ptr(proj), tarray, 3);
-
-		drawFB(shader, soulS, frame,
-			glm::value_ptr(modelSS),
-			glm::value_ptr(view),
-			glm::value_ptr(proj), tarray, 3);
-
-		drawFB(post, quad, screen, glm::value_ptr(glm::mat4(ct)), 
-		glm::value_ptr(glm::mat4()),
-			glm::value_ptr(glm::mat4()),
-			frame.colors, frame.nColors);
-
-		//drawPhong(shader, soulS, glm::value_ptr(modelSS),
-		//	glm::value_ptr(view),
-		//	glm::value_ptr(proj), tarray, 3);
-	
-		
+		time += 0.016f;
+		tdraw(simple, spear, screen, model, view, proj, spear_diffuse, spear_normal, spear_specular);
 	}
-	freeFramebuffer(frame);
-	freeShader(shader);
-	freeGeometry(soulS);
-	for each(auto &t in tarray) freeTexture(t);
-	window.term();
-	return 0;
+
+	context.term();
 }

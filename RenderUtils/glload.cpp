@@ -25,12 +25,12 @@ std::string cppStyleFileToString(const char *path)
 
 
 
-Shader loadShader(const char *vpath, const char *fpath)
+Shader loadShader(const char *vpath, const char *fpath, bool depth, bool add, bool face)
 {
 	std::string vs = cppStyleFileToString(vpath);
 	std::string fs = cppStyleFileToString(fpath);
 
-	return makeShader(vs.c_str(), fs.c_str());
+	return makeShader(vs.c_str(), fs.c_str(), depth, add, face);
 }
 
 Texture loadTexture(const char *path)
@@ -46,14 +46,6 @@ Texture loadTexture(const char *path)
 	p = stbi_load(path, &w, &h, &f, STBI_default);
 
 	if (!p) return retval;
-
-	switch (f)
-	{
-	case STBI_grey:		 f = GL_RED;  break;
-	case STBI_grey_alpha:f = GL_RG;   break;
-	case STBI_rgb:		 f = GL_RGB;  break;
-	case STBI_rgb_alpha: f = GL_RGBA; break;
-	}
 
 	retval = makeTexture(w, h, f, p);
 	stbi_image_free(p);
@@ -80,7 +72,7 @@ Geometry loadOBJ(const char *path)
 		const float *p = &attrib.vertices[ind.vertex_index * 3];// +1, +2, 1
 
 		verts[i].position = glm::vec4(p[0], p[1], p[2], 1.f);
-		verts[i].normal = glm::vec4(n[0], n[1], n[2], 0.f);
+		verts[i].normal   = glm::vec4(n[0], n[1], n[2], 0.f);
 
 		if (ind.texcoord_index >= 0)
 		{

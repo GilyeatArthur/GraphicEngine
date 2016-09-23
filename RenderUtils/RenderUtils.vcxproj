@@ -13,7 +13,6 @@
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="crenderutils.cpp" />
-    <ClCompile Include="Gallery.cpp" />
     <ClCompile Include="gldraw.cpp" />
     <ClCompile Include="glload.cpp" />
     <ClCompile Include="glmake.cpp" />
@@ -25,7 +24,6 @@
   <ItemGroup>
     <ClInclude Include="Camera.h" />
     <ClInclude Include="crenderutils.h" />
-    <ClInclude Include="Gallery.h" />
     <ClInclude Include="gldecs.h" />
     <ClInclude Include="gldraw.h" />
     <ClInclude Include="glload.h" />

@@ -168,7 +168,7 @@ std::string cppStyleFileToString(const char *path)
 
 
 
-Shader loadShader(const char *vpath, const char *fpath)
+Shader loadShader(const char *vpath, const char *fpath, bool depth, bool add, bool face)
 {
 	char * vsource; //max of 5012 characters in source
 	char * fsource; //will probably change that later
@@ -180,7 +180,7 @@ Shader loadShader(const char *vpath, const char *fpath)
 	std::string fs = cppStyleFileToString(fpath);
 	//return makeShader(vs.c_str(), fs.c_str());
 
-	return makeShader(vsource, fsource);
+	return makeShader(vsource, fsource, depth, add, face);
 }
 
 #define TINYOBJLOADER_IMPLEMENTATION // define this in only *one* .cc

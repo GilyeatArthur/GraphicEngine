@@ -11,6 +11,7 @@ namespace tdraw_internal
 	void tdraw_close(const Shader &s, const Geometry &g, const Framebuffer &r);
 
 	size_t tdraw_format(size_t idx, size_t tex, const glm::mat4 &val);
+	size_t tdraw_format(size_t idx, size_t tex, const glm::vec4 &val);
 	size_t tdraw_format(size_t idx, size_t tex, const glm::vec3 &val);
 
 	size_t tdraw_format(size_t idx, size_t tex, int   val);

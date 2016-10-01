@@ -20,6 +20,11 @@ std::string cppStyleFileToString(const char *path)
 	std::ifstream infile{ path };
 	std::string file_contents{ std::istreambuf_iterator<char>(infile),
 		std::istreambuf_iterator<char>() };
+
+	// CONDITION MUST BE TRUE OR BAD JUJU
+	// assert(CONDITION);
+	assert(file_contents.size() > 0 && "Shader failed to load!");
+	
 	return file_contents;
 }
 
@@ -54,7 +59,7 @@ Texture loadTexture(const char *path)
 
 Geometry loadOBJ(const char *path)
 {
-	glog("TODO", "Eliminate redundant vertices.");
+	glog("TODO","Eliminate redundant vertices.");
 	tinyobj::attrib_t attrib;
 	std::vector<tinyobj::shape_t> shapes;
 	std::vector<tinyobj::material_t> materials;
@@ -69,7 +74,7 @@ Geometry loadOBJ(const char *path)
 		auto ind = shapes[0].mesh.indices[i];
 
 		const float *n = &attrib.normals[ind.normal_index * 3]; // +1, +2, 0
-		const float *p = &attrib.vertices[ind.vertex_index * 3];// +1, +2, 1
+		const float *p = &attrib.vertices[ind.vertex_index * 3]; // +1, +2, 1
 
 		verts[i].position = glm::vec4(p[0], p[1], p[2], 1.f);
 		verts[i].normal   = glm::vec4(n[0], n[1], n[2], 0.f);
@@ -77,7 +82,7 @@ Geometry loadOBJ(const char *path)
 		if (ind.texcoord_index >= 0)
 		{
 			const float *t = &attrib.texcoords[ind.texcoord_index * 2]; // +1
-			verts[i].texCoord = glm::vec2(t[0], t[1]);
+			verts[i].texcoord = glm::vec2(t[0], t[1]);
 		}
 
 		tris[i] = i;
@@ -87,6 +92,52 @@ Geometry loadOBJ(const char *path)
 
 	delete[] verts;
 	delete[] tris;
-	// then we can call makeGeometry as per normal
+	// then we can call makeGeometry as per normal.
 	return retval;
+}
+
+
+unsigned loadAllOBJ(const char *path, Geometry *out, unsigned size)
+{
+	glog("TODO", "Eliminate redundant vertices.");
+	tinyobj::attrib_t attrib;
+	std::vector<tinyobj::shape_t> shapes;
+	std::vector<tinyobj::material_t> materials;
+	std::string err;
+	bool ret = tinyobj::LoadObj(&attrib, &shapes, &materials, &err, path);
+
+	// instead of pulling vertices from just the first shape,
+	// we pull from ALL shapes.
+	for(int k = 0; k  < shapes.size() && k < size; ++k)
+	{
+		auto &shape = shapes[k];
+
+		int vsize = shape.mesh.indices.size();
+		Vertex   *verts = new Vertex[vsize];
+		unsigned * tris = new unsigned[vsize];
+
+		for (int i = 0; i < vsize; ++i)
+		{
+			auto ind = shape.mesh.indices[i];
+
+			const float *n = &attrib.normals[ind.normal_index * 3]; // +1, +2, 0
+			const float *p = &attrib.vertices[ind.vertex_index * 3]; // +1, +2, 1
+
+			verts[i].position = glm::vec4(p[0], p[1], p[2], 1.f);
+			verts[i].normal = glm::vec4(n[0], n[1], n[2], 0.f);
+
+			if (ind.texcoord_index >= 0)
+			{
+				const float *t = &attrib.texcoords[ind.texcoord_index * 2]; // +1
+				verts[i].texcoord = glm::vec2(t[0], t[1]);
+			}
+			tris[i] = i;
+		}
+
+		out[k] = makeGeometry(verts, vsize, tris, vsize);
+
+		delete[] verts;
+		delete[] tris;
+	}
+	return  shapes.size();
 }

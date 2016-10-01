@@ -22,7 +22,7 @@ Geometry makeGeometry(const struct Vertex *verts, size_t vsize, const unsigned i
 
 	//Attributes
 	glEnableVertexAttribArray(0); // position
-	glEnableVertexAttribArray(1); // colour
+	glEnableVertexAttribArray(1); // color
 	glEnableVertexAttribArray(2); // Normal
 	glEnableVertexAttribArray(3); // TexCoord
 
@@ -78,16 +78,18 @@ void freeShader(Shader &shader)
 	shader.handle = 0;
 }
 
-Texture makeTexture(unsigned width, unsigned height, unsigned channels, const unsigned char *pixels)
+Texture makeTexture(unsigned width, unsigned height, unsigned channels, const unsigned char *pixels, bool isFloat)
 {
-	GLenum format = GL_RGBA;
+	GLenum eformat = GL_RGBA; // Number of channels goes
+	GLenum iformat = isFloat ? GL_RGBA32F : eformat; // number of channels and the type
 	switch (channels)
 	{
-	case 0: format = GL_DEPTH_COMPONENT; break;
-	case 1: format = GL_RED;  break;
-	case 2: format = GL_RG;   break;
-	case 3: format = GL_RGB;  break;
-	case 4: format = GL_RGBA; break;
+	case 0: eformat = GL_DEPTH_COMPONENT; iformat = GL_DEPTH24_STENCIL8; break;
+
+	case 1: eformat = GL_RED;  iformat = isFloat ? GL_R32F : eformat;  break;
+	case 2: eformat = GL_RG;   iformat = isFloat ? GL_RG32F : eformat;  break;
+	case 3: eformat = GL_RGB;  iformat = isFloat ? GL_RGB32F : eformat;  break;
+	case 4: eformat = GL_RGBA; iformat = isFloat ? GL_RGBA32F : eformat;  break;
 	default: glog("ERROR", "Channels must be 0-4");
 	}
 
@@ -96,7 +98,7 @@ Texture makeTexture(unsigned width, unsigned height, unsigned channels, const un
 	glGenTextures(1, &retval.handle);				// Declaration
 	glBindTexture(GL_TEXTURE_2D, retval.handle);	// Scoping
 
-	glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, pixels);
+	glTexImage2D(GL_TEXTURE_2D, 0, iformat, width, height, 0, eformat, isFloat ? GL_FLOAT : GL_UNSIGNED_BYTE, pixels);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -139,13 +141,10 @@ void freeTexture(Texture &t)
 	t = { 0,0,0,0 };
 }
 
-Framebuffer makeFramebuffer(unsigned width, unsigned height, unsigned nColors)
+Framebuffer makeFramebuffer(unsigned width, unsigned height, unsigned nColors, const bool *isFloat, const int *channels)
 {
-	glog("TODO", "Find a way to implement statemanagment.");
-	glog("TODO", "Better implementation of the depth buffer.");
-	glog("TODO", "Provide more options? enable/disable stecil/depth buffers.");
 
-	Framebuffer retval = { 0, width, height, nColors,0,0,0,0,0,0,0 };
+	Framebuffer retval = { 0, width, height, nColors/*,0,0,0,0,0,0,0*/ };
 
 	glGenFramebuffers(1, &retval.handle);
 	glBindFramebuffer(GL_FRAMEBUFFER, retval.handle);
@@ -162,7 +161,7 @@ Framebuffer makeFramebuffer(unsigned width, unsigned height, unsigned nColors)
 
 	for (int i = 0; i < nColors && i < 8; ++i)
 	{
-		retval.colors[i] = makeTexture(width, height, 4, 0);
+		retval.colors[i] = makeTexture(width, height, channels ? channels[i] : 4, 0, isFloat ? isFloat[i] : false);
 		glFramebufferTexture(GL_FRAMEBUFFER, attachments[i], retval.colors[i].handle, 0);
 	}
 

@@ -19,7 +19,7 @@ Geometry genGrid(unsigned sqr, float dim)
 
 			verts[r * sqr + c].position = glm::vec4((c / (sqr - 1.f) -.5f) *dim, 0,
 													(r / (sqr - 1.f) - .5f)*dim, 1);
-			verts[r * sqr + c].texCoord = glm::vec2(c / (sqr - 1.f), r / (sqr - 1.f));
+			verts[r * sqr + c].texcoord = glm::vec2(c / (sqr - 1.f), r / (sqr - 1.f));
 			verts[r * sqr + c].normal   = glm::vec4(0, 1, 0, 0);
 		}
 	}

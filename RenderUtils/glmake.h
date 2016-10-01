@@ -8,9 +8,9 @@ void freeGeometry(Geometry &);
 struct Shader makeShader(const char *vsource, const char *fsource, bool depth = true, bool add = false, bool face = true);
 void freeShader(Shader &);
 
-struct Texture makeTexture(unsigned width, unsigned height, unsigned channels, const unsigned char *pixels);
+struct Texture makeTexture(unsigned width, unsigned height, unsigned channels, const unsigned char *pixels, bool isFloat = false);
 struct Texture makeTextureF(unsigned square, const float *pixels);
 void freeTexture(Texture &t);
 
-struct Framebuffer makeFramebuffer(unsigned width, unsigned height, unsigned ncolors);
+struct Framebuffer makeFramebuffer(unsigned width, unsigned height, unsigned nColors, const bool *isFloat = nullptr, const int *channels = nullptr);
 void freeFramebuffer(Framebuffer &);

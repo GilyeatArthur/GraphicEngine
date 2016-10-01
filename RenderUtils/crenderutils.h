@@ -24,7 +24,7 @@
 //void draw(const Shader &, const Geometry &, float time);
 //void drawCam(const Shader &s, const Geometry &g, const float *M, const float *V, const float *P, float time);
 //
-//// color depth - 24-bit colour vs 32-bit colours vs 8-bit
+//// colour depth - 24-bit colour vs 32-bit colours vs 8-bit
 //// 0 - 255, #00 - #FF
 //// R   G   B   A
 ////#FF  FF  FF  FF
@@ -39,7 +39,7 @@
 //	 const float M[16], const float V[16], const float P[16], 
 //	 const Texture *T, unsigned t_count);
 //
-//Framebuffer makeFramebuffer(unsigned width, unsigned height, unsigned ncolors);
+//Framebuffer makeFramebuffer(unsigned width, unsigned height, unsigned ncolours);
 //
 //void freeFramebuffer(Framebuffer &);
 //

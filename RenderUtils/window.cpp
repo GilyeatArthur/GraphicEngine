@@ -11,11 +11,11 @@
 void APIENTRY GL_errorCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar *message, const void *userParam)
 {
 	//std::cerr << message << std::endl;
-	fprintf(stderr, "%s\n", message);
+
 
 	if (severity == GL_DEBUG_SEVERITY_HIGH)
 	{
-		abort();
+	fprintf(stderr, "%s\n", message);
 	}
 }
 

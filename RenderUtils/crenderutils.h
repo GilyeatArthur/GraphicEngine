@@ -8,6 +8,8 @@
 #include "glload.h"
 #include "gldraw.h"
 
+#include "GridMaker.h"
+
 //Texture loadTexture(const char *path);
 //
 //Geometry makeGeometry(const struct Vertex *verts, size_t vsize, 

@@ -1,5 +1,3 @@
-
-
 #include "crenderutils.h"
 #include "gotTime.h"
 #include "Input.h"
